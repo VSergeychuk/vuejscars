@@ -14,7 +14,8 @@ new Vue({
         car: cars[0],
         selectedCarIndex: 0,
         phoneVisible: false,
-        search: ''
+        search: '',
+        modalVisible: false
     },
     methods: {
         selectCar(index) {
@@ -28,10 +29,9 @@ new Vue({
             return this.phoneVisible ? 'Hide phone' : 'Show phone'
         },
         filteredCars() {
-            const filtered = this.cars.filter(car => {
-                return car.name.indexOf(this.search) > -1
+            return this.cars.filter(car => {
+                return car.name.indexOf(this.search) > -1 || car.model.indexOf(this.search) > -1
             });
-            return filtered;
         }
     }
 });
