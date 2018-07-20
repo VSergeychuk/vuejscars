@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml"
+      xmlns:v-text="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="app.css">
+    <title>VueJS</title>
+</head>
+<body>
+<div class="container pt-5" id="app">
+    <div class="row">
+        <div class="col">
+            <h1>Cars applications</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label for="search">Find your car</label>
+                <input
+                        type="text"
+                        class="form-control"
+                        id="search"
+                        placeholder="Name, model ..."
+                        v-model="search"
+                >
+            </div>
+
+            <hr>
+            <ul class="list-group">
+                <li
+                        v-for="(car, index) of filteredCars"
+                        class="list-group-item list-group-item-action pointer"
+                        v-on:click="selectCar(index)"
+                        v-bind:class="{'active': selectedCarIndex === index}"
+                >
+                    {{ car.name }} {{ car.model }}
+                </li>
+            </ul>
+        </div>
+
+        <div class="col-md-8 pt-3">
+            <div class="row">
+                <div class="col-md-7">
+                    <h4>{{ car.name}}</h4>
+                    <img
+                            v-bind:src="car.image"
+                            v-bind:alt="car.name"
+                            class="rounded detailed-car-image"
+                    >
+                </div>
+                <div class="col-md-5 pt-2">
+                    <h6>Car details</h6>
+                    <hr>
+                    <ul>
+                        <li>Model <strong>{{ car.model}}</strong></li>
+                        <li>Year <strong>{{ car.year }}</strong></li>
+                        <li>Owner <strong>{{ car.owner }}</strong></li>
+                        <div class="phone-block">
+                            <p v-if="phoneVisible">{{ car.phone}}</p>
+                        </div>
+
+                        <button
+                                class="btn btn-outline-success mr-3"
+                                v-on:click="phoneVisible = !phoneVisible"
+                                v-text="phoneBtnText"
+                        ></button>
+                        <button
+                                class="btn btn-primary"
+                        >Buy
+                        </button>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
