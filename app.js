@@ -6,12 +6,14 @@ const cars = [
     car('Toyota', 'Hiace Regius', 1997, 'Sarkisyan', '+7908 0000001', 'images/ToyotaHiaceRegius.jpg'),
     car('Mazda', 'Bongo Friendee', 2004, 'Rakitin', '+7900 1002000', 'images/MazdaBongo.jpg')
 ];
+const log = (text, type, date = new Date()) => ({text, type, date});
 
 new Vue({
     el: '#app',
     data: {
         cars: cars,
         car: cars[0],
+        logs: [],
         selectedCarIndex: 0,
         phoneVisible: false,
         search: '',
@@ -22,6 +24,19 @@ new Vue({
             console.log('Clicked...', index);
             this.car = cars[index];
             this.selectedCarIndex = index;
+        },
+        newOrder() {
+            this.modalVisible = false;
+            this.logs.push(
+                log(`Car ${this.car.name} ${this.car.model} is successfully ordered :-)`, `ok`)
+            );
+        },
+        cancelOrder() {
+            this.modalVisible = false;
+            this.logs.push(
+                log(`Order is cancelled for car ${this.car.name} ${this.car.model} :-(`, `cnl`)
+            );
+
         }
     },
     computed: {
@@ -32,6 +47,11 @@ new Vue({
             return this.cars.filter(car => {
                 return car.name.indexOf(this.search) > -1 || car.model.indexOf(this.search) > -1
             });
+        }
+    },
+    filters: {
+        date(value){
+            return value.toLocaleString();
         }
     }
 });
