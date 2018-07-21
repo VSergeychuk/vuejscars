@@ -16,6 +16,7 @@
         </div>
     </div>
 
+    <!--поиск по марке или модели-->
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
@@ -28,8 +29,9 @@
                         v-model="search"
                 >
             </div>
-
             <hr>
+
+            <!--вывод списка машин (марка + модель)           -->
             <ul class="list-group">
                 <li
                         v-for="(car, index) of filteredCars"
@@ -42,6 +44,7 @@
             </ul>
         </div>
 
+        <!--вывод марки и фото машины            -->
         <div class="col-md-8 pt-3">
             <div class="row">
                 <div class="col-md-7">
@@ -52,6 +55,8 @@
                             class="rounded detailed-car-image"
                     >
                 </div>
+
+                <!--вывод характерстик машины (поля объекта car)            -->
                 <div class="col-md-5 pt-2">
                     <h6>Car details</h6>
                     <hr>
@@ -60,10 +65,14 @@
                         <li>Year <strong>{{ car.year }}</strong></li>
                         <li>Owner <strong>{{ car.owner }}</strong></li>
                     </ul>
-                    <div class="phone-block">
-                        <p v-if="phoneVisible">{{ car.phone}}</p>
-                    </div>
 
+                    <!--добавлены кнопки: Phone (hide/show), Buy It!(завязанная на Modal)                     -->
+                    <div class="phone-block">
+                        <!--добавлена анимация для "выезда" телефонного номера (классы phone-* в app.css) -->
+                        <transition name="phone">
+                            <p v-if="phoneVisible">{{ car.phone}}</p>
+                        </transition>
+                    </div>
                     <button
                             class="btn btn-outline-success mr-3"
                             v-on:click="phoneVisible = !phoneVisible"
@@ -72,14 +81,16 @@
                     <button
                             class="btn btn-primary"
                             v-on:click="modalVisible = true"
-                    >Buy
+                    >Buy It!
                     </button>
-
                 </div>
             </div>
         </div>
     </div>
 
+    <!--добавлено логирование c условиями:-->
+    <!--1. не будет записи логов, если не жмём кнопки Buy It! или Cancel в Modal-->
+    <!--2. и по ситуации меняется цвет вывода лога, в зависимости от log.type -->
     <div class="row pt-3" v-if="logs.lenght !==0">
         <div class="col-md-12">
             <ul class="list-group">
@@ -96,48 +107,57 @@
         </div>
     </div>
 
-    <div class="modal fade show" v-if="modalVisible" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Do you want to buy this car?</h5>
-                    <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                            v-on:click="modalVisible = false"
-                    >
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p>Current car - <strong>{{ car.name }}</strong></p>
-                    <ul>
-                        <li>Model <strong>{{ car.model}}</strong></li>
-                        <li>Year <strong>{{ car.year }}</strong></li>
-                        <li>Owner <strong>{{ car.owner }}</strong></li>
-                    </ul>
-                </div>
-                <div class="modal-footer">
-                    <button
-                            type="button"
-                            class="btn btn-primary"
-                            v-on:click="newOrder"
-                    >Buy it!
-                    </button>
-                    <button
-                            type="button"
-                            class="btn btn-secondary"
-                            data-dismiss="modal"
-                            v-on:click="cancelOrder"
-                    >Cancel
-                    </button>
+    <!--добавлено Modal сначала: class="modal fade show"                -->
+    <!--затем добавлена анимация для появления Modal (классы model-* в app.css)                -->
+    <transition name="modal">
+        <div class="modal fade show" v-if="modalVisible" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Do you want to buy this car ?</h5>
+                        <button
+                                type="button"
+                                class="close"
+                                data-dismiss="modal"
+                                aria-label="Close"
+                                v-on:click="modalVisible = false"
+                        ><span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <!--Повторяем детализацию                -->
+                    <div class="modal-body">
+                        <p>Current car - <strong>{{ car.name }}</strong></p>
+                        <ul>
+                            <li>Model <strong>{{ car.model}}</strong></li>
+                            <li>Year <strong>{{ car.year }}</strong></li>
+                            <li>Owner <strong>{{ car.owner }}</strong></li>
+                        </ul>
+                    </div>
+                    <!--Формируем логи в newOrder, cancelOrder                -->
+                    <div class="modal-footer">
+                        <button
+                                type="button"
+                                class="btn btn-primary"
+                                v-on:click="newOrder"
+                        >Buy it!
+                        </button>
+                        <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-dismiss="modal"
+                                v-on:click="cancelOrder"
+                        >Cancel
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="modal-backdrop fade show" v-if="modalVisible"></div>
+    </transition>
+
+    <!--добавлена анимация для скрытия Modal (классы fade-* в app.css)                -->
+    <transition name="fade">
+        <div class="modal-backdrop fade show" v-if="modalVisible"></div>
+    </transition>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>

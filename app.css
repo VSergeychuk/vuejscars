@@ -10,6 +10,53 @@
     height: 36px;
 }
 
-.modal{
+.modal {
     display: block;
+}
+
+/*Animations*/
+/*  *-enter         класс, когда элемент появился ...                           */
+/*  *-enter-active  класс, кот. висит на элементе, когда он анимируется         */
+/*  *-enter-to      класс, указывающий на то, к какому состоянию он стремится   */
+/*  аналогично с *-leave, *-leave-active, *-leave-to                            */
+
+/*Phone Animations*/
+.phone-enter-active, .phone-leave-active {
+    transition: all, .5s;
+}
+
+.phone-enter, .phone-leave-to {
+    transform: translateX(50px);
+    opacity: 0;
+}
+
+/*Modal Animations*/
+.modal-enter-active, .modal-leave-active {
+    transition: all, .5s;
+}
+
+.modal-enter, .modal-leave-to {
+    transform: translateY(-100px);
+}
+
+/*Fade Animations*/
+.fade-enter-active {
+    animation: .75s fade forwards;
+}
+
+.fade-leave-active {
+    animation: .75s fade reverse;
+}
+
+.fade-enter, .fade-leave-to {
+    transform: translateY(-100px);
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: .5;
+    }
 }
